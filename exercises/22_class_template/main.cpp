@@ -30,7 +30,32 @@ struct Tensor4D {
     // 例如，`this` 形状为 `[1, 2, 3, 4]`，`others` 形状为 `[1, 2, 1, 4]`，
     // 则 `this` 与 `others` 相加时，3 个形状为 `[1, 2, 1, 4]` 的子张量各自与 `others` 对应项相加。
     Tensor4D &operator+=(Tensor4D const &others) {
-        // TODO: 实现单向广播的加法
+        unsigned int stride_this[4];
+        unsigned int stride_other[4];
+        stride_this[3] = 1;
+        stride_other[3] = 1;
+        for (int i = 2; i >= 0; --i) {
+            stride_this[i] = stride_this[i + 1] * shape[i + 1];
+            stride_other[i] = stride_other[i + 1] * others.shape[i + 1];
+        }
+
+        for (auto i0 = 0u; i0 < shape[0]; ++i0) {
+            for (auto i1 = 0u; i1 < shape[1]; ++i1) {
+                for (auto i2 = 0u; i2 < shape[2]; ++i2) {
+                    for (auto i3 = 0u; i3 < shape[3]; ++i3) {
+                        auto idx_this = i0 * stride_this[0] + i1 * stride_this[1] + i2 * stride_this[2] + i3 * stride_this[3];
+
+                        auto o0 = others.shape[0] == 1 ? 0u : i0;
+                        auto o1 = others.shape[1] == 1 ? 0u : i1;
+                        auto o2 = others.shape[2] == 1 ? 0u : i2;
+                        auto o3 = others.shape[3] == 1 ? 0u : i3;
+                        auto idx_other = o0 * stride_other[0] + o1 * stride_other[1] + o2 * stride_other[2] + o3 * stride_other[3];
+
+                        data[idx_this] += others.data[idx_other];
+                    }
+                }
+            }
+        }
         return *this;
     }
 };
