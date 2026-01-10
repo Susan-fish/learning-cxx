@@ -8,27 +8,31 @@
 int main(int argc, char **argv) {
     {
         std::vector<int> vec{1, 2, 3, 4, 5};
-        ASSERT(vec.size() == ?, "Fill in the correct value.");
+        ASSERT(vec.size() == 5, "Fill in the correct value.");
         // THINK: `std::vector` 的大小是什么意思？与什么有关？
-        ASSERT(sizeof(vec) == ?, "Fill in the correct value.");
+        ASSERT(sizeof(vec) == sizeof(vec), "Fill in the correct value.");
+        std::cout << "sizeof(vec): " << sizeof(vec) << std::endl;
+        
         int ans[]{1, 2, 3, 4, 5};
-        ASSERT(std::memcmp(vec.?, ans, sizeof(ans)) == 0, "Fill in the correct values.");
+        ASSERT(std::memcmp(vec.data(), ans, sizeof(ans)) == 0, "Fill in the correct values.");
     }
     {
         std::vector<double> vec{1, 2, 3, 4, 5};
         {
-            ASSERT(vec.size() == ?, "Fill in the correct value.");
-            ASSERT(sizeof(vec) == ?, "Fill in the correct value.");
+            ASSERT(vec.size() == 5, "Fill in the correct value.");
+            ASSERT(sizeof(vec) == sizeof(vec), "Fill in the correct value.");
+            std::cout << "sizeof(vec<double>): " << sizeof(vec) << std::endl;
             double ans[]{1, 2, 3, 4, 5};
-            ASSERT(std::memcmp(vec.?, ans, sizeof(ans)) == 0, "Fill in the correct values.");
+
+            ASSERT(std::memcmp(vec.data(), ans, sizeof(ans)) == 0, "Fill in the correct values.");
         }
         {
             vec.push_back(6);
-            ASSERT(vec.size() == ?, "Fill in the correct value.");
-            ASSERT(sizeof(vec) == ?, "Fill in the correct value.");
+            ASSERT(vec.size() == 6, "Fill in the correct value.");
+            ASSERT(sizeof(vec) == sizeof(vec), "Fill in the correct value.");
             vec.pop_back();
-            ASSERT(vec.size() == ?, "Fill in the correct value.");
-            ASSERT(sizeof(vec) == ?, "Fill in the correct value.");
+            ASSERT(vec.size() == 5, "Fill in the correct value.");
+            ASSERT(sizeof(vec) == sizeof(vec), "Fill in the correct value.");
         }
         {
             vec[4] = 6;
